@@ -117,7 +117,7 @@ bot.on('message', (message) => {
                     .setURL('https://myanimelist.net' + r.path)
                     .addField('Manga', 'Score : ' + r.score)
                     .setDescription(synopsis[0]);
-                    message.channel.send({embed});
+                message.channel.send({embed});
             })
         });
     }
@@ -127,10 +127,21 @@ bot.on('message', (message) => {
         command.splice(0,1);
         var sentence = command.join(" ");
         imdb.getReq({name: sentence}, (err, film) => {
-            var movie = film;
-            console.log(movie);
-        })
-        //TODO
+            if(err) {
+                return console.error(err);
+            }
+            let movie = film;
+            var embed = new Discord.RichEmbed()
+                .setTitle(movie.title)
+                .setColor(0xF3CE13)
+                .setThumbnail(movie.poster)
+                .setURL(movie.imdburl)
+                .addField(movie.type, movie.year)
+                .addField('Genres : ' + movie.genres, 'Run time : ' + movie.runtime)
+                .addField('Director : ' + movie.director, 'Rating : ' + movie.rating + '/10')
+                .setDescription(movie.plot);
+            message.channel.send({embed});
+        });
     }
 });
 
