@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const mal = require('maljs');
+const imdb = require('imdb-api');
 const bot = new Discord.Client();
 const settings = require('./settings.json');
 const functions = require('./functions.js');
@@ -78,21 +80,56 @@ bot.on('message', (message) => {
 
     //give the weather '-weather [city]'
     if(command[0] == prefixe + 'weather' && command.length == 2){
+        command.splice(0,1);
+        var sentence = command.join(" ");
         //TODO
     }
 
     //reference an anime '-anime [name of anime]'
     if(command[0] == prefixe + 'anime' && command.length >= 2){
-        //TODO
+        command.splice(0,1);
+        var query = command.join(" ");
+        mal.quickSearch(query, 'anime').then(function(results) {
+            results.anime[1].fetch().then(function(r) {
+                var embed = new Discord.RichEmbed()
+                    .setTitle(r.title)
+                    .setColor(0x2E51A2)
+                    .setThumbnail(r.cover)
+                    .setURL('https://myanimelist.net' + r.path)
+                    .addField('Anime', 'Score : ' + r.score)
+                    .setDescription(r.description.replace('[Written by MAL Rewrite]', ''));
+                    message.channel.send({embed});
+            })
+        });
     }
 
     //reference a manga '-manga [name of manga]'
     if(command[0] == prefixe + 'manga' && command.length >= 2){
-        //TODO
+        command.splice(0,1);
+        var query = command.join(" ");
+        mal.quickSearch(query, 'manga').then(function(results) {
+            results.manga[0].fetch().then(function(r) {
+                var synopsis = r.description.split('[Written by MAL Rewrite]');
+                var embed = new Discord.RichEmbed()
+                    .setTitle(r.title)
+                    .setColor(0x4F74C8)
+                    .setThumbnail(r.cover)
+                    .setURL('https://myanimelist.net' + r.path)
+                    .addField('Manga', 'Score : ' + r.score)
+                    .setDescription(synopsis[0]);
+                    message.channel.send({embed});
+            })
+        });
     }
 
     //reference a movie '-movie [name of movie]'
     if(command[0] == prefixe + 'movie' && command.length >= 2){
+        command.splice(0,1);
+        var sentence = command.join(" ");
+        imdb.getReq({name: sentence}, (err, film) => {
+            var movie = film;
+            console.log(movie);
+        })
         //TODO
     }
 });
