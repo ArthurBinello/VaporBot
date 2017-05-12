@@ -9,6 +9,7 @@
   "author": "arthurbinello",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.1.0"
+    "discord.js": "^11.1.0",
+    "fullwidth": "^1.2.0"
   }
 }

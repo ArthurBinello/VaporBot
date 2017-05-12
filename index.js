@@ -61,15 +61,37 @@ bot.on('message', (message) => {
 
     //make the text Ａｅｓｔｈｅｔｉｃ
     if(command[0] == prefixe + 'wave' && command.length >= 2){
-        for(var i=0; i<command[1].length; i++){
-            //TODO convert unicode to aesthetic
-            command[1][i] = command[1][i].charCodeAt(0).toString(16).substr(4);
+        command.splice(0,1);
+        var sentence = command.join(" ");
+        var aesthetic = '';
+        for(var i=0; i<sentence.length; i++){
+            if(sentence[i] >= '!' && sentence[i] <= '~'){
+                aesthetic += String.fromCharCode(sentence.charCodeAt(i)+65248);
+            }
+            else{
+                aesthetic += sentence[i];
+            }
         }
-        message.channel.sendMessage(command[1]);
+        message.channel.sendMessage(aesthetic);
     }
 
     //give the weather '-weather [city]'
     if(command[0] == prefixe + 'weather' && command.length == 2){
+        //TODO
+    }
+
+    //reference an anime '-anime [name of anime]'
+    if(command[0] == prefixe + 'anime' && command.length >= 2){
+        //TODO
+    }
+
+    //reference a manga '-manga [name of manga]'
+    if(command[0] == prefixe + 'manga' && command.length >= 2){
+        //TODO
+    }
+
+    //reference a movie '-movie [name of movie]'
+    if(command[0] == prefixe + 'movie' && command.length >= 2){
         //TODO
     }
 });
