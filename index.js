@@ -20,6 +20,7 @@ bot.on('message', (message) => {
     //display an help menu
     if(command[0] == prefixe + 'help' && command.length == 1){
         //TODO
+        message.channel.sendMessage('List of commands :\n-roll [number of faces]\n-flip\n-ping\n-wave [text to change]\n-weather [city]\n-anime [name of anime]\n-manga [name of manga]\n-movie [name of movie]\n');
     }
 
     //roll a dice '-roll [number of faces]'
@@ -63,7 +64,7 @@ bot.on('message', (message) => {
         //TODO
     }
 
-    //make the text Ａｅｓｔｈｅｔｉｃ
+    //make the text Ａｅｓｔｈｅｔｉｃ '-wave [text to change]'
     if(command[0] == prefixe + 'wave' && command.length >= 2){
         command.splice(0,1);
         var sentence = command.join(" ");
