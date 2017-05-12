@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const mal = require('maljs');
 const imdb = require('imdb-api');
+const weather = require('weather-js');
 const bot = new Discord.Client();
 const settings = require('./settings.json');
 const functions = require('./functions.js');
@@ -82,7 +83,19 @@ bot.on('message', (message) => {
     if(command[0] == prefixe + 'weather' && command.length == 2){
         command.splice(0,1);
         var sentence = command.join(" ");
-        //TODO
+        weather.find({search: sentence, degreeType: 'C'}, function(err, result) {
+            if(err) return console.error(err);
+            var day = result[0]['current'].shortday;
+            var tomorrowTemp = (parseFloat(result[0]['forecast'][2].low) + parseFloat(result[0]['forecast'][2].high)/2).toString();
+            var embed = new Discord.RichEmbed()
+                .setTitle(result[0]['location'].name)
+                .setColor(0xBDF7FF)
+                .setFooter(result[0]['current'].date + ' ' + result[0]['current'].observationtime)
+                .addField(result[0]['current'].skytext, result[0]['current'].temperature + '°C')
+                .addField('Tomorrow : ' + result[0]['forecast'][2].skytextday, tomorrowTemp + '°C')
+                .setThumbnail(result[0]['current'].imageUrl);
+            message.channel.send({embed});
+        })
     }
 
     //reference an anime '-anime [name of anime]'
@@ -126,11 +139,9 @@ bot.on('message', (message) => {
     if(command[0] == prefixe + 'movie' && command.length >= 2){
         command.splice(0,1);
         var sentence = command.join(" ");
-        imdb.getReq({name: sentence}, (err, film) => {
-            if(err) {
-                return console.error(err);
-            }
-            let movie = film;
+        imdb.getReq({name: sentence}, (err, result) => {
+            if(err) return console.error(err);
+            let movie = result;
             var embed = new Discord.RichEmbed()
                 .setTitle(movie.title)
                 .setColor(0xF3CE13)

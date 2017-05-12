@@ -12,6 +12,7 @@
     "discord.js": "^11.1.0",
     "fullwidth": "^1.2.0",
     "imdb-api": "^2.2.2",
-    "maljs": "^0.3.0"
+    "maljs": "^0.3.0",
+    "weather-js": "^2.0.0"
   }
 }
