@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const settings = require('./settings.json');
+const functions = require('./functions.js');
 var prefixe = '-';
 
 //trigger when bot connect to the server
@@ -23,7 +24,7 @@ bot.on('message', (message) => {
         if(command[1] >= 2 && command.length == 2){
             //flip a coin
             if(command[1] == 2){
-                flip(message);
+                functions.flip(message);
             }
             else{
                 var rand = Math.floor(Math.random() * command[1]) + 1;
@@ -35,7 +36,7 @@ bot.on('message', (message) => {
     //flip a coin '-flip'
     if(command[0] == prefixe + 'flip'){
         if(command.length == 1){
-            flip(message);
+            functions.flip(message);
         }
     }
 
@@ -99,15 +100,3 @@ bot.on('message', (message) => {
 //access the bot account
 bot.login(settings.token);
 
-//flip a coin
-function flip(message){
-    var coin = Math.floor(Math.random() * 2);
-    var side;
-    if(coin == 0){
-        side = 'Head';
-    }
-    else{
-        side = 'Tail';
-    }
-    message.channel.sendMessage(message.author + ' flipped a coin and landed on ' + side);
-}
