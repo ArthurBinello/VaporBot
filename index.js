@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const mal = require('maljs');
 const imdb = require('imdb-api');
 const weather = require('weather-js');
+const latestTweets = require('latest-tweets');
 const bot = new Discord.Client();
 const settings = require('./settings.json');
 const functions = require('./functions.js');
@@ -16,12 +17,6 @@ bot.on('ready', () => {
 bot.on('message', (message) => {
     if(message.author == bot.user) return; //quit if the bot trigger itself
     var command = message.content.split(" ");
-
-    //display an help menu
-    if(command[0] == prefixe + 'help' && command.length == 1){
-        //TODO
-        message.channel.sendMessage('List of commands :\n-roll [number of faces]\n-flip\n-ping\n-wave [text to change]\n-weather [city]\n-anime [name of anime]\n-manga [name of manga]\n-movie [name of movie]\n');
-    }
 
     //roll a dice '-roll [number of faces]'
     if(command[0] == prefixe + 'roll'){
@@ -38,14 +33,14 @@ bot.on('message', (message) => {
     }
 
     //flip a coin '-flip'
-    if(command[0] == prefixe + 'flip'){
+    else if(command[0] == prefixe + 'flip'){
         if(command.length == 1){
             functions.flip(message);
         }
     }
 
     //return the ping of the sender
-    if(command[0] == prefixe + 'ping' && command.length == 1){
+    else if(command[0] == prefixe + 'ping' && command.length == 1){
         var dateNow = Date.now() - message.createdTimestamp;
         var authorid = message.author.id;
         var rgb = parseInt('0x' + parseInt(authorid % 256, 16) + parseInt(authorid % 255, 16) + parseInt(authorid % 254, 16)); //make color based on user id
@@ -60,17 +55,20 @@ bot.on('message', (message) => {
     }
 
     //play a vaporwave playlist
-    if(command[0] == prefixe + 'vapor' && command.length == 1){
+    else if(command[0] == prefixe + 'vapor' && command.length == 1){
         //TODO
     }
 
     //make the text Ａｅｓｔｈｅｔｉｃ '-wave [text to change]'
-    if(command[0] == prefixe + 'wave' && command.length >= 2){
+    else if(command[0] == prefixe + 'wave' && command.length >= 2){
         command.splice(0,1);
         var sentence = command.join(" ");
         var aesthetic = '';
         for(var i=0; i<sentence.length; i++){
-            if(sentence[i] >= '!' && sentence[i] <= '~'){
+            if(sentence[i] == ' '){
+                aesthetic += '   '
+            }
+            else if(sentence[i] >= '!' && sentence[i] <= '~'){
                 aesthetic += String.fromCharCode(sentence.charCodeAt(i)+65248);
             }
             else{
@@ -81,7 +79,7 @@ bot.on('message', (message) => {
     }
 
     //give the weather '-weather [city]'
-    if(command[0] == prefixe + 'weather' && command.length == 2){
+    else if(command[0] == prefixe + 'weather' && command.length >= 2){
         command.splice(0,1);
         var sentence = command.join(" ");
         weather.find({search: sentence, degreeType: 'C'}, function(err, result) {
@@ -92,7 +90,7 @@ bot.on('message', (message) => {
                 .setTitle(result[0]['location'].name)
                 .setColor(0xBDF7FF)
                 .setFooter(result[0]['current'].date + ' ' + result[0]['current'].observationtime)
-                .addField(result[0]['current'].skytext, result[0]['current'].temperature + '°C')
+                .addField('Today : ' + result[0]['current'].skytext, result[0]['current'].temperature + '°C')
                 .addField('Tomorrow : ' + result[0]['forecast'][2].skytextday, tomorrowTemp + '°C')
                 .setThumbnail(result[0]['current'].imageUrl);
             message.channel.send({embed});
@@ -100,11 +98,11 @@ bot.on('message', (message) => {
     }
 
     //reference an anime '-anime [name of anime]'
-    if(command[0] == prefixe + 'anime' && command.length >= 2){
+    else if(command[0] == prefixe + 'anime' && command.length >= 2){
         command.splice(0,1);
         var query = command.join(" ");
         mal.quickSearch(query, 'anime').then(function(results) {
-            results.anime[1].fetch().then(function(r) {
+            results.anime[0].fetch().then(function(r) {
                 var embed = new Discord.RichEmbed()
                     .setTitle(r.title)
                     .setColor(0x2E51A2)
@@ -118,7 +116,7 @@ bot.on('message', (message) => {
     }
 
     //reference a manga '-manga [name of manga]'
-    if(command[0] == prefixe + 'manga' && command.length >= 2){
+    else if(command[0] == prefixe + 'manga' && command.length >= 2){
         command.splice(0,1);
         var query = command.join(" ");
         mal.quickSearch(query, 'manga').then(function(results) {
@@ -137,7 +135,7 @@ bot.on('message', (message) => {
     }
 
     //reference a movie '-movie [name of movie]'
-    if(command[0] == prefixe + 'movie' && command.length >= 2){
+    else if(command[0] == prefixe + 'movie' && command.length >= 2){
         command.splice(0,1);
         var sentence = command.join(" ");
         imdb.getReq({name: sentence}, (err, result) => {
@@ -154,6 +152,26 @@ bot.on('message', (message) => {
                 .setDescription(movie.plot);
             message.channel.send({embed});
         });
+    }
+
+    //display the last tweet of @realDonaldTrump
+    else if(command[0] == prefixe + 'donald' && command.length == 1){
+        latestTweets('realDonaldTrump', function (err, tweets) {
+            var embed = new Discord.RichEmbed()
+                .setTitle(tweets[0].username)
+                .setDescription(tweets[0].content)
+                .setColor(0x4099FF)
+                .setURL(tweets[0].url)
+                .setTimestamp(tweets[0].date);
+            message.channel.send({embed});
+        });
+    }
+
+    //display an help menu
+    else if(command[0].startsWith(prefixe)){
+        //TODO
+        if(command[0] != prefixe + 'help' && command.length != 1) message.channel.sendMessage('This command does not exist.');
+        message.channel.sendMessage('List of commands :\n-roll [number of faces]\n-flip\n-ping\n-wave [text to change]\n-weather [city]\n-anime [name of anime]\n-manga [name of manga]\n-movie [name of movie]\n');
     }
 });
 
