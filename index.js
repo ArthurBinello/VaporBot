@@ -8,6 +8,7 @@ const bot = new Discord.Client();
 const settings = require('./settings.json');
 const functions = require('./functions.js');
 var prefixe = '-';
+var channel;
 
 //trigger when bot connect to the server
 bot.on('ready', () => {
@@ -57,12 +58,18 @@ bot.on('message', (message) => {
 
     //play a vaporwave playlist
     else if(command[0] == prefixe + 'vapor' && command.length == 1){
-        //TODO
-        const channel = message.member.voiceChannel;
-
+        channel = message.member.voiceChannel;
         channel.join()
             .then(connection => console.log('Connected!'))
             .catch(console.error);
+        message.channel.sendMessage('Ｊｏｉｎｉｎｇ　' + channel.name + '．．．');
+        //TODO
+    }
+
+    else if(command[0] == prefixe + 'stop' && command.length == 1){
+        if(channel != null){
+            channel.leave();
+        }
     }
 
     //make the text Ａｅｓｔｈｅｔｉｃ '-wave [text to change]'
