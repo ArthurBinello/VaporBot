@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.1.0",
+    "ffmpeg": "0.0.4",
     "fullwidth": "^1.2.0",
     "imdb-api": "^2.2.2",
     "latest-tweets": "^1.0.3",

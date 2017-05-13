@@ -3,6 +3,7 @@ const mal = require('maljs');
 const imdb = require('imdb-api');
 const weather = require('weather-js');
 const latestTweets = require('latest-tweets');
+const ffmpeg = require('ffmpeg');
 const bot = new Discord.Client();
 const settings = require('./settings.json');
 const functions = require('./functions.js');
@@ -57,6 +58,11 @@ bot.on('message', (message) => {
     //play a vaporwave playlist
     else if(command[0] == prefixe + 'vapor' && command.length == 1){
         //TODO
+        const channel = message.member.voiceChannel;
+
+        channel.join()
+            .then(connection => console.log('Connected!'))
+            .catch(console.error);
     }
 
     //make the text Ａｅｓｔｈｅｔｉｃ '-wave [text to change]'
@@ -171,7 +177,8 @@ bot.on('message', (message) => {
     else if(command[0].startsWith(prefixe)){
         //TODO
         if(command[0] != prefixe + 'help' && command.length != 1) message.channel.sendMessage('This command does not exist.');
-        message.channel.sendMessage('List of commands :\n-roll [number of faces]\n-flip\n-ping\n-wave [text to change]\n-weather [city]\n-anime [name of anime]\n-manga [name of manga]\n-movie [name of movie]\n');
+        message.channel.sendMessage('Ｌｉｓｔ   ｏｆ   ｃｏｍｍａｎｄｓ   ：\n-roll [number of faces]\n-flip\n-ping\n-wave [text to change]\n-weather [city]\n-anime [name of anime]\
+        \n-manga [name of manga]\n-movie [name of movie]\n');
     }
 });
 
