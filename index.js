@@ -4,6 +4,7 @@ const imdb = require('imdb-api');
 const weather = require('weather-js');
 const latestTweets = require('latest-tweets');
 const ffmpeg = require('ffmpeg');
+const ytdl = require('ytdl-core');
 const bot = new Discord.Client();
 const settings = require('./settings.json');
 const functions = require('./functions.js');
@@ -58,12 +59,16 @@ bot.on('message', (message) => {
 
     //play a vaporwave playlist
     else if(command[0] == prefixe + 'vapor' && command.length == 1){
+        var voiceConnection;
         channel = message.member.voiceChannel;
         channel.join()
-            .then(connection => console.log('Connected!'))
+            .then(connection => {
+                const streamOptions = { seek: 0, volume: 1 };
+                var stream = ytdl('https://www.youtube.com/watch?v=cU8HrO7XuiE');
+                var voiceHandler = connection.playStream(stream, streamOptions);
+            })
             .catch(console.error);
         message.channel.sendMessage('Ｊｏｉｎｉｎｇ　' + channel.name + '．．．');
-        //TODO
     }
 
     else if(command[0] == prefixe + 'stop' && command.length == 1){
