@@ -64,7 +64,7 @@ bot.on('message', (message) => {
         channel.join()
             .then(connection => {
                 const streamOptions = { seek: 0, volume: 1 };
-                var stream = ytdl('https://www.youtube.com/watch?v=cU8HrO7XuiE');
+                var stream = ytdl('https://www.youtube.com/watch?v=cU8HrO7XuiE&list=RDQM2ODUAO5uACU'); //playlist doesn't work
                 var voiceHandler = connection.playStream(stream, streamOptions);
             })
             .catch(console.error);
