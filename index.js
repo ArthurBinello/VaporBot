@@ -23,6 +23,7 @@ bot.on('message', (message) => {
 
     //roll a dice '-roll [number of faces]'
     if(command[0] == prefixe + 'roll'){
+        command[1] = Math.floor(command[1]);
         if(command[1] >= 2 && command.length == 2){
             //flip a coin
             if(command[1] == 2){
@@ -30,8 +31,12 @@ bot.on('message', (message) => {
             }
             else{
                 var rand = Math.floor(Math.random() * command[1]) + 1;
-                message.channel.sendMessage(message.author + ' rolled a ' + rand  + ' from a D' + command[1]);
+                message.channel.sendMessage(message.author + ' rolled a **' + rand  + '** from a D' + command[1]);
             }
+        }
+        else{
+            var rand = Math.floor(Math.random() * 6) + 1;
+            message.channel.sendMessage(message.author + ' rolled a **' + rand  + '** from a D6');
         }
     }
 
@@ -49,7 +54,7 @@ bot.on('message', (message) => {
         var rgb = parseInt('0x' + parseInt(authorid % 256, 16) + parseInt(authorid % 255, 16) + parseInt(authorid % 254, 16)); //make color based on user id
         message.channel.sendEmbed({
             'color' : rgb,
-            'title' : 'ping : ' + dateNow + ' ms',
+            'title' : 'ping : **' + dateNow + '** ms',
             'author' : { 
                 name : message.author.username,
                 icon_url : message.author.avatarURL
@@ -175,18 +180,24 @@ bot.on('message', (message) => {
     //display the last tweet of @realDonaldTrump
     else if(command[0] == prefixe + 'donald' && command.length == 1){
         latestTweets('realDonaldTrump', function (err, tweets) {
+            var text = tweets[0].content;
+            text = text.split("pic.twitter");
             var embed = new Discord.RichEmbed()
                 .setTitle(tweets[0].username)
-                .setDescription(tweets[0].content)
+                .setDescription(text[0])
                 .setColor(0x4099FF)
                 .setURL(tweets[0].url)
-                .setTimestamp(tweets[0].date);
+                .setTimestamp(tweets[0].date)
+                .setAuthor("Donald J. Trump", "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_400x400.jpg", "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_400x400.jpg");
+            if(text.length == 2) {
+                embed.setImage("https://pic.twitter" + text[1])
+            }
             message.channel.send({embed});
         });
     }
 
     else if(command[0] == prefixe + '8ball' && command.length >= 2 && command[command.length-1].endsWith('?')){
-        var rand = Math.floor(Math.random() * 19) + 1;
+        var rand = Math.floor(Math.random() * 20) + 1;
         var answer;
         switch(rand){
             case 1 : answer = "it is certain.";
