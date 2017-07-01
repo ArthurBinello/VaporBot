@@ -31,12 +31,12 @@ bot.on('message', (message) => {
             }
             else{
                 var rand = Math.floor(Math.random() * command[1]) + 1;
-                message.channel.sendMessage(message.author + ' rolled a **' + rand  + '** from a D' + command[1]);
+                message.channel.send(message.author + ' rolled a **' + rand  + '** from a D' + command[1]);
             }
         }
         else{
             var rand = Math.floor(Math.random() * 6) + 1;
-            message.channel.sendMessage(message.author + ' rolled a **' + rand  + '** from a D6');
+            message.channel.send(message.author + ' rolled a **' + rand  + '** from a D6');
         }
     }
 
@@ -52,7 +52,7 @@ bot.on('message', (message) => {
         var dateNow = Date.now() - message.createdTimestamp;
         var authorid = message.author.id;
         var rgb = parseInt('0x' + parseInt(authorid % 256, 16) + parseInt(authorid % 255, 16) + parseInt(authorid % 254, 16)); //make color based on user id
-        message.channel.sendEmbed({
+        message.channel.send({
             'color' : rgb,
             'title' : 'ping : **' + dateNow + '** ms',
             'author' : { 
@@ -73,7 +73,7 @@ bot.on('message', (message) => {
                 var voiceHandler = connection.playStream(stream, streamOptions);
             })
             .catch(console.error);
-        message.channel.sendMessage('Ｊｏｉｎｉｎｇ　' + channel.name + '．．．');
+        message.channel.send('Ｊｏｉｎｉｎｇ　' + channel.name + '．．．');
     }
 
     else if(command[0] == prefixe + 'stop' && command.length == 1){
@@ -98,7 +98,7 @@ bot.on('message', (message) => {
                 aesthetic += sentence[i];
             }
         }
-        message.channel.sendMessage(aesthetic);
+        message.channel.send(aesthetic);
     }
 
     //give the weather '-weather [city]'
@@ -247,8 +247,8 @@ bot.on('message', (message) => {
     //display an help menu
     else if(command[0].startsWith(prefixe)){
         //TODO
-        if(command[0] != prefixe + 'help' && command.length != 1) message.channel.sendMessage('This command does not exist.');
-        message.channel.sendMessage('Ｌｉｓｔ   ｏｆ   ｃｏｍｍａｎｄｓ   ：\n-roll [number of faces]\n-flip\n-ping\n-wave [text to change]\n-weather [city]\n-anime [name of anime]\
+        if(command[0] != prefixe + 'help' && command.length != 1) message.channel.send('This command does not exist.');
+        message.channel.send('Ｌｉｓｔ   ｏｆ   ｃｏｍｍａｎｄｓ   ：\n-roll [number of faces]\n-flip\n-ping\n-wave [text to change]\n-weather [city]\n-anime [name of anime]\
         \n-manga [name of manga]\n-movie [name of movie]\n-8ball [question]\n');
     }
 });
