@@ -12,9 +12,11 @@
     "discord.js": "^11.1.0",
     "ffmpeg": "0.0.4",
     "fullwidth": "^1.2.0",
+    "imdb": "^1.1.0",
     "imdb-api": "^2.2.2",
     "latest-tweets": "^1.0.3",
     "maljs": "^0.3.0",
+    "name-to-imdb": "^1.6.0",
     "twitter": "^1.7.0",
     "weather-js": "^2.0.0",
     "ytdl": "^0.6.0"
