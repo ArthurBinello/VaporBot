@@ -14,6 +14,7 @@ const manga = require('./commands/manga.js');
 const movie = require('./commands/movie.js');
 const donald = require('./commands/donald.js');
 const eightball = require('./commands/eightball.js');
+const aesthetic = require('./commands/aesthetic.js');
 const help = require('./commands/help.js');
 
 var channel;
@@ -41,6 +42,7 @@ bot.on('message', (message) => {
         movie.parse(message) || //display the related movie
         donald.parse(message) || //display the last tweet of @realDonaldTrump
         eightball.parse(message) || //answer a given question
+        aesthetic.parse(message) || //show a random image from r/VaporwaveAesthetics
         help.parse(message); //display a list of all the commands
     
     if(!commandUsed && message.content.startsWith('-')){

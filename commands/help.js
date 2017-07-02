@@ -20,6 +20,7 @@ module.exports = class ping extends command {
         -manga [name]\n \
         -movie [name]\n \
         -donald\n \
-        -8ball [question]\n');
+        -8ball [question]\n \
+        -aesthetic\n');
     }
 }

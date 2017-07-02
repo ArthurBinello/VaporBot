@@ -17,6 +17,7 @@
     "latest-tweets": "^1.0.3",
     "maljs": "^0.3.0",
     "name-to-imdb": "^1.6.0",
+    "redwrap": "0.0.4",
     "twitter": "^1.7.0",
     "weather-js": "^2.0.0",
     "ytdl": "^0.6.0"
