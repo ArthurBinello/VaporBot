@@ -29,6 +29,12 @@ bot.on('message', (message) => {
     if(message.author == bot.user) return; //quit if the bot trigger itself
     var command = message.content.split(" ");
     if(message.content.startsWith('-')){
+        if(message.content.startsWith('-vapor')){
+            bot.user.setGame('Ｖａｐｏｒｗａｖｅ');
+        }
+        else if(message.content.startsWith('-stop')){
+            bot.user.setGame('');
+        }
         let commandUsed =
             roll.parse(message) || //roll a dice
             flip.parse(message) || //flip a coin
