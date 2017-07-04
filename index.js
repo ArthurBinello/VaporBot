@@ -28,25 +28,27 @@ bot.on('ready', () => {
 bot.on('message', (message) => {
     if(message.author == bot.user) return; //quit if the bot trigger itself
     var command = message.content.split(" ");
-
-    let commandUsed = 
-        roll.parse(message) || //roll a dice
-        flip.parse(message) || //flip a coin
-        ping.parse(message) || //check the ping with the bot
-        vapor.parse(message) || //play a vaporwave playlist TODO
-        stop.parse(message) || //stop the current music
-        wave.parse(message) || //make the text aesthetic
-        weather.parse(message) || //display the weather for tomorrow
-        anime.parse(message) || //display the related anime
-        manga.parse(message) || //display the related manga
-        movie.parse(message) || //display the related movie
-        donald.parse(message) || //display the last tweet of @realDonaldTrump
-        eightball.parse(message) || //answer a given question
-        aesthetic.parse(message) || //show a random image from r/VaporwaveAesthetics
-        help.parse(message); //display a list of all the commands
+    if(message.content.startsWith('-')){
+        let commandUsed =
+            roll.parse(message) || //roll a dice
+            flip.parse(message) || //flip a coin
+            ping.parse(message) || //check the ping with the bot
+            vapor.parse(message) || //play a vaporwave playlist TODO
+            stop.parse(message) || //stop the current music
+            wave.parse(message) || //make the text aesthetic
+            weather.parse(message) || //display the weather for tomorrow
+            anime.parse(message) || //display the related anime
+            manga.parse(message) || //display the related manga
+            movie.parse(message) || //display the related movie
+            donald.parse(message) || //display the last tweet of @realDonaldTrump
+            eightball.parse(message) || //answer a given question
+            aesthetic.parse(message) || //show a random image from r/VaporwaveAesthetics
+            help.parse(message); //display a list of all the commands
     
-    if(!commandUsed && message.content.startsWith('-')){
-        help.action(message);
+        if(!commandUsed){
+            help.action(message);
+        }
+        message.delete();
     }
 });
 

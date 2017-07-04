@@ -15,6 +15,7 @@ module.exports = class stop extends command {
         else{
             if(index.channel != null){
                 index.channel.leave();
+                index.channel = null;
             }
         }
     }

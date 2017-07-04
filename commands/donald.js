@@ -24,9 +24,9 @@ module.exports = class ping extends command {
                     .setURL(tweets[0].url)
                     .setTimestamp(tweets[0].date)
                     .setAuthor("Donald J. Trump", "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_400x400.jpg", "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_400x400.jpg");
-                if(text.length == 2) {
+                /*if(text.length == 2) {
                     embed.setImage("https://pic.twitter" + text[1])
-                }
+                }*/ //TODO pic.twitter refers to the tweet itself and not the image
                 message.channel.send({embed});
             });
         }

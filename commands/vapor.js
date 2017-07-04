@@ -1,6 +1,7 @@
 const command = require('./command.js');
 const ffmpeg = require('ffmpeg');
 const ytdl = require('ytdl-core');
+var ytpl = require('ytpl');
 const index = require('../index.js');
 
 module.exports = class vapor extends command {
@@ -17,20 +18,41 @@ module.exports = class vapor extends command {
         else{
             let voiceConnection;
             let channel = message.member.voiceChannel;
-            index.channel = channel;
-            if(channel != null){
-                channel.join()
-                .then(connection => {
-                    const streamOptions = { seek: 0, volume: 1 };
-                    var stream = ytdl('https://www.youtube.com/watch?v=cU8HrO7XuiE&list=RDQM2ODUAO5uACU'); //playlist doesn't work
-                    var voiceHandler = connection.playStream(stream, streamOptions);
-                })
-                .catch(console.error);
-                message.channel.send('Joining *' + channel.name + '*...');
-            }
-            else{ //author not in a channel
-                message.channel.send(message.author + ' is not in a voice channel.');
-            }
+            ytpl('PLkDIan7sXW2hYtHwy5I2yIG5sACqfX_K8', function(err, playlist) {
+                if(err) throw err;
+                index.channel = channel;
+                if(channel != null){
+                    channel.join()
+                    .then(connection => {
+                        let streamOptions = { seek: 0, volume: 1 };
+                        let firstSong = Math.floor(Math.random() * playlist.items.length);
+                        let stream = ytdl(playlist.items[firstSong].url_simple);
+                        let voiceHandler = connection.playStream(stream, streamOptions).on('end', () => {
+                            vapor.play(playlist, firstSong);
+                        })
+                    })
+                    .catch(console.error);
+                    message.channel.send('Playing Vaporwave in *' + channel.name + '*...');
+                }
+                else{ //author not in a channel
+                    message.channel.send(message.author + ' is not in a voice channel.');
+                }
+            });
+            
+        }
+    }
+
+    static play(playlist, previous){
+        let song = 0;
+        do{
+            song = Math.floor(Math.random() * playlist.items.length);
+        }while(song == previous);
+        if(index.channel != null){
+            let streamOptions = { seek: 0, volume: 1 };
+            let stream = ytdl(playlist.items[song].url_simple);
+            let voiceHandler = index.channel.connection.playStream(stream, streamOptions).on('end', () => {
+                vapor.play(playlist, song);
+            });
         }
     }
 }
