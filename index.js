@@ -54,4 +54,3 @@ bot.on('message', (message) => {
 
 //access the bot account
 bot.login(settings.token);
-
