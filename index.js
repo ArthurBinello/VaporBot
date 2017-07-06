@@ -54,7 +54,9 @@ bot.on('message', (message) => {
         if(!commandUsed){
             help.action(message);
         }
-        message.delete();
+        if(message.guild.member(bot.user).hasPermission("MANAGE_MESSAGES")){
+            message.delete();
+        }
     }
 });
 
