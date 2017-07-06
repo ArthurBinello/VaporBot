@@ -21,6 +21,8 @@ module.exports = class ping extends command {
         -movie [name]\n \
         -donald\n \
         -8ball [question]\n \
-        -aesthetic\n');
+        -aesthetic\n').then(msg => {
+            msg.react('❌');
+        });
     }
 }

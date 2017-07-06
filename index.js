@@ -60,5 +60,13 @@ bot.on('message', (message) => {
     }
 });
 
+bot.on('messageReactionAdd', (messageReaction, user) => {
+    if(user != bot.user){
+        if(messageReaction.emoji.name == '❌'){
+             messageReaction.message.delete();
+        }
+    }
+})
+
 //access the bot account
 bot.login(settings.token);
