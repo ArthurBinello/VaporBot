@@ -34,7 +34,9 @@ module.exports = class movie extends command {
                                 .addField('Genres : ' + data.genre, 'Run time : ' + data.runtime)
                                 .addField('Director : ' + data.director, 'Rating : ' + data.rating + '/10')
                                 .setDescription(data.description);
-                            message.channel.send({embed});
+                            message.channel.send({embed}).then(msg => {
+                                msg.react('❌');
+                            });
                         }
                         else{
                             message.channel.send('There has been an error with IMDB.').then(msg => {

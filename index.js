@@ -18,10 +18,12 @@ const aesthetic = require('./commands/aesthetic.js');
 const help = require('./commands/help.js');
 
 var channel;
+var broadcast;
 
 //trigger when bot connect to the server
 bot.on('ready', () => {
     console.log('Logged in as ' + bot.user.username);
+    broadcast = bot.createVoiceBroadcast();
 })
 
 //trigger when a message is sent on the server
@@ -74,7 +76,7 @@ bot.on('messageReactionAdd', (messageReaction, user) => {
              messageReaction.message.delete();
         }
     }
-})
+});
 
 //access the bot account
 bot.login(settings.token);

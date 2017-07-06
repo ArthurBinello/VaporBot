@@ -6,6 +6,9 @@ const index = require('../index.js');
 
 var lastSong;
 var messageSent;
+var listPlay;
+var voiceConnection;
+var broadcast;
 
 module.exports = class vapor extends command {
 
@@ -19,7 +22,6 @@ module.exports = class vapor extends command {
             message.channel.send('There is too many arguments.');
         }
         else{
-            let voiceConnection;
             let channel = message.member.voiceChannel;
             ytpl('PLkDIan7sXW2hYtHwy5I2yIG5sACqfX_K8', function(err, playlist) {
                 if(err) throw err;
@@ -27,20 +29,19 @@ module.exports = class vapor extends command {
                 if(channel != null){
                     channel.join()
                     .then(connection => {
+                        voiceConnection = connection;
+                        listPlay = playlist;
                         let streamOptions = { seek: 0, volume: 1 };
-                        lastSong = Math.floor(Math.random() * playlist.items.length);
-                        let stream = ytdl(playlist.items[lastSong].url_simple);
-                        console.log(playlist.items[lastSong].title);
-                        messageSent.edit('Playing : ' + playlist.items[lastSong].title);
+                        lastSong = Math.floor(Math.random() * listPlay.items.length);
+                        let stream = ytdl(listPlay.items[lastSong].url_simple, { filter : 'audioonly' });
+                        messageSent.edit('Playing : *' + listPlay.items[lastSong].title + '*');
                         let voiceHandler = connection.playStream(stream, streamOptions).on('end', () => {
-                            vapor.play(playlist);
-                        })
+                            vapor.play();
+                        });
                     })
                     .catch(console.error);
                     message.channel.send('Playing Vaporwave in *' + channel.name + '*...').then(msg => {
                         messageSent = msg;
-                        /*msg.react('⏩');
-                        msg.react('🔚');*/
                     });
                 }
                 else{ //author not in a channel
@@ -53,18 +54,18 @@ module.exports = class vapor extends command {
         }
     }
 
-    static play(playlist){
+    static play(){
         let song = 0;
         do{
-            song = Math.floor(Math.random() * playlist.items.length);
+            song = Math.floor(Math.random() * listPlay.items.length);
         }while(song == lastSong);
         if(index.channel != null){
             lastSong = song;
             let streamOptions = { seek: 0, volume: 1 };
-            let stream = ytdl(playlist.items[song].url_simple);
-            messageSent.edit('Playing : ' + playlist.items[lastSong].title);
-            let voiceHandler = index.channel.connection.playStream(stream, streamOptions).on('end', () => {
-                vapor.play(playlist);
+            let stream = ytdl(listPlay.items[song].url_simple, { filter : 'audioonly' });
+            messageSent.edit('Playing : *' + listPlay.items[lastSong].title + '*');
+            let voiceHandler = voiceConnection.playStream(stream, streamOptions).on('end', () => {
+                vapor.play();
             });
         }
     }
