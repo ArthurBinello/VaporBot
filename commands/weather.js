@@ -11,10 +11,14 @@ module.exports = class weather extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length < 2){ //not enough arguments
-            message.channel.send("There isn't enough arguments.");
+            message.channel.send("There isn't enough arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else if(command.length > 2){ //too many arguments
-            message.channel.send("There is too many arguments.");
+            message.channel.send("There is too many arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             command.shift();
@@ -33,7 +37,9 @@ module.exports = class weather extends command {
                     .addField('Current : ' + result[0]['current'].skytext, result[0]['current'].temperature + '°C')
                     .addField('Tomorrow : ' + result[0]['forecast'][2].skytextday, tomorrowTemp + '°C')
                     .setThumbnail(result[0]['current'].imageUrl);
-                message.channel.send({embed});
+                message.channel.send({embed}).then(msg => {
+                    msg.react('❌');
+                });
             });
         }
     }

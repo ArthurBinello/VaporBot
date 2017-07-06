@@ -29,7 +29,7 @@ bot.on('message', (message) => {
     if(message.author == bot.user) return; //quit if the bot trigger itself
     var command = message.content.split(" ");
     if(message.content.startsWith('-')){
-        if(message.content.startsWith('-vapor')){
+        if(message.content.startsWith('-vapor')){ //change the game being played in the member list
             bot.user.setGame('Ｖａｐｏｒｗａｖｅ');
         }
         else if(message.content.startsWith('-stop')){
@@ -51,10 +51,18 @@ bot.on('message', (message) => {
             aesthetic.parse(message) || //show a random image from r/VaporwaveAesthetics
             help.parse(message); //display a list of all the commands
     
-        if(!commandUsed){
-            help.action(message);
+        if(!commandUsed){ //ask for help when start with -
+            message.react('❓');
+            bot.on('messageReactionAdd', (messageReaction, user) => {
+                if(user != bot.user){
+                    if(messageReaction.emoji.name == '❓'){
+                        message.delete();
+                        help.action(message);
+                    }
+                }
+            })
         }
-        if(message.guild.member(bot.user).hasPermission("MANAGE_MESSAGES")){
+        else if(message.guild.member(bot.user).hasPermission("MANAGE_MESSAGES")){
             message.delete();
         }
     }

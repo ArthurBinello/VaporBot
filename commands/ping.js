@@ -10,7 +10,9 @@ module.exports = class ping extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length > 1){ //too many arguments
-            message.channel.send('There is too many arguments.');
+            message.channel.send('There is too many arguments.').then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             let dateNow = Date.now() - message.createdTimestamp;
@@ -20,7 +22,9 @@ module.exports = class ping extends command {
                 .setTitle('ping : **' + dateNow + '** ms')
                 .setColor(rgb)
                 .setAuthor(message.author.username, message.author.avatarURL);
-            message.channel.send({embed});
+            message.channel.send({embed}).then(msg => {
+                msg.react('❌');
+            });
         }
     }
 }

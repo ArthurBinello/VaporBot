@@ -12,7 +12,9 @@ module.exports = class movie extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length < 2){ //not enough arguments
-            message.channel.send("There isn't enough arguments.");
+            message.channel.send("There isn't enough arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             command.shift();
@@ -35,12 +37,16 @@ module.exports = class movie extends command {
                             message.channel.send({embed});
                         }
                         else{
-                            message.channel.send('There has been an error with IMDB.');
+                            message.channel.send('There has been an error with IMDB.').then(msg => {
+                                msg.react('❌');
+                            });
                         }
                     })
                 }
                 else{
-                    message.channel.send('This movie does not exist.');
+                    message.channel.send('This movie does not exist.').then(msg => {
+                        msg.react('❌');
+                    });
                 }
             })
         }

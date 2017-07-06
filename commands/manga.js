@@ -11,7 +11,9 @@ module.exports = class manga extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length < 2){ //not enough arguments
-            message.channel.send("There isn't enough arguments.");
+            message.channel.send("There isn't enough arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             command.shift();
@@ -26,7 +28,9 @@ module.exports = class manga extends command {
                         .setURL('https://myanimelist.net' + r.path)
                         .addField('Manga', 'Score : ' + r.score)
                         .setDescription(synopsis[0]);
-                    message.channel.send({embed});
+                    message.channel.send({embed}).then(msg => {
+                        msg.react('❌');
+                    });
                 })
             });
         }

@@ -9,7 +9,9 @@ module.exports = class wave extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length < 2){ //not enough arguments
-            message.channel.send("There isn't enough arguments.");
+            message.channel.send("There isn't enough arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             command.shift();
@@ -26,7 +28,9 @@ module.exports = class wave extends command {
                     aesthetic += sentence[i];
                 }
             }
-            message.channel.send(aesthetic);
+            message.channel.send(aesthetic).then(msg => {
+                msg.react('❌');
+            });
         }
     }
 }

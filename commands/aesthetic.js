@@ -26,7 +26,9 @@ module.exports = class ping extends command {
                     .setColor(0xFF6AD5)
                     .setURL('http://reddit.com' + data.data.children[nb].data.permalink)
                     .setImage(data.data.children[nb].data.url)
-                message.channel.send({embed});
+                message.channel.send({embed}).then(msg => {
+                    msg.react('❌');
+                });
             });
         }
     }

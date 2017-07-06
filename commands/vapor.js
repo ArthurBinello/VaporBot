@@ -1,8 +1,10 @@
 const command = require('./command.js');
 const ffmpeg = require('ffmpeg');
 const ytdl = require('ytdl-core');
-var ytpl = require('ytpl');
+const ytpl = require('ytpl');
 const index = require('../index.js');
+
+var lastSong;
 
 module.exports = class vapor extends command {
 
@@ -25,33 +27,39 @@ module.exports = class vapor extends command {
                     channel.join()
                     .then(connection => {
                         let streamOptions = { seek: 0, volume: 1 };
-                        let firstSong = Math.floor(Math.random() * playlist.items.length);
-                        let stream = ytdl(playlist.items[firstSong].url_simple);
+                        lastSong = Math.floor(Math.random() * playlist.items.length);
+                        let stream = ytdl(playlist.items[lastSong].url_simple);
                         let voiceHandler = connection.playStream(stream, streamOptions).on('end', () => {
-                            vapor.play(playlist, firstSong);
+                            vapor.play(playlist);
                         })
                     })
                     .catch(console.error);
-                    message.channel.send('Playing Vaporwave in *' + channel.name + '*...');
+                    message.channel.send('Playing Vaporwave in *' + channel.name + '*...').then(msg => {
+                        /*msg.react('⏩');
+                        msg.react('🔚');*/
+                    });
                 }
                 else{ //author not in a channel
-                    message.channel.send(message.author + ' is not in a voice channel.');
+                    message.channel.send(message.author + ' is not in a voice channel.').then(msg => {
+                        msg.react('❌');
+                    });
                 }
             });
             
         }
     }
 
-    static play(playlist, previous){
+    static play(playlist){
         let song = 0;
         do{
             song = Math.floor(Math.random() * playlist.items.length);
-        }while(song == previous);
+        }while(song == lastSong);
         if(index.channel != null){
+            lastSong = song;
             let streamOptions = { seek: 0, volume: 1 };
             let stream = ytdl(playlist.items[song].url_simple);
             let voiceHandler = index.channel.connection.playStream(stream, streamOptions).on('end', () => {
-                vapor.play(playlist, song);
+                vapor.play(playlist);
             });
         }
     }

@@ -11,7 +11,9 @@ module.exports = class anime extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length < 2){ //not enough arguments
-            message.channel.send("There isn't enough arguments.");
+            message.channel.send("There isn't enough arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             command.shift();
@@ -25,7 +27,9 @@ module.exports = class anime extends command {
                         .setURL('https://myanimelist.net' + r.path)
                         .addField('Anime', 'Score : ' + r.score)
                         .setDescription(r.description.replace('[Written by MAL Rewrite]', ''));
-                    message.channel.send({embed});
+                    message.channel.send({embed}).then(msg => {
+                        msg.react('❌');
+                    });
                 })
             });
         }

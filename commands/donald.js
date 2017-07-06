@@ -11,7 +11,9 @@ module.exports = class ping extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length > 1){ //too many arguments
-            message.channel.send('There is too many arguments.');
+            message.channel.send('There is too many arguments.').then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             latestTweets('realDonaldTrump', function (err, tweets) {
@@ -27,7 +29,9 @@ module.exports = class ping extends command {
                 /*if(text.length == 2) {
                     embed.setImage("https://pic.twitter" + text[1])
                 }*/ //TODO pic.twitter refers to the tweet itself and not the image
-                message.channel.send({embed});
+                message.channel.send({embed}).then(msg => {
+                    msg.react('❌');
+                });
             });
         }
     }

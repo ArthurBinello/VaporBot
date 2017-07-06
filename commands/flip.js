@@ -9,13 +9,19 @@ module.exports = class flip extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length > 2){ //too many arguments
-            message.channel.send('There is too many arguments.');
+            message.channel.send('There is too many arguments.').then(msg => {
+                msg.react('❌');
+            });
         }
         else if(command.length < 2){ //not enough arguments
-            message.channel.send("There isn't enough arguments.");
+            message.channel.send("There isn't enough arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else if(command[1] != 'head' && command[1] != 'tails'){ //bad bet
-            message.channel.send("The bet needs to be written *head* or *tails*");
+            message.channel.send("The bet needs to be written *head* or *tails*").then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             let coin = Math.floor(Math.random() * 2);
@@ -27,7 +33,9 @@ module.exports = class flip extends command {
                 else{
                     result = 'ＦＡＩＬＵＲＥ！ ';
                 }
-                message.channel.send(result + message.author + ' flipped a coin and landed on **Head**');
+                message.channel.send(result + message.author + ' flipped a coin and landed on **Head**').then(msg => {
+                    msg.react('❌');
+                });
             }
             else{
                 if(command[1] == 'tails'){
@@ -36,7 +44,9 @@ module.exports = class flip extends command {
                 else{
                     result = 'ＦＡＩＬＵＲＥ！ ';
                 }
-                message.channel.send(result + message.author + ' flipped a coin and landed on **Tails**');
+                message.channel.send(result + message.author + ' flipped a coin and landed on **Tails**').then(msg => {
+                    msg.react('❌');
+                });
             }
         }
     }

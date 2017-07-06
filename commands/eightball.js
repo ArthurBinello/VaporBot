@@ -9,11 +9,15 @@ module.exports = class eightball extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length < 2){ //not enough arguments
-            message.channel.send("There isn't enough arguments.");
+            message.channel.send("There isn't enough arguments.").then(msg => {
+                msg.react('❌');
+            });
         }
         else if(command[command.length-1].endsWith('?')){
-            var rand = Math.floor(Math.random() * 20) + 1;
-            var answer;
+            command.shift();
+            let question = command.join(' ');
+            let rand = Math.floor(Math.random() * 20) + 1;
+            let answer;
             switch(rand){
                 case 1 : answer = "it is certain.";
                     break;
@@ -23,7 +27,7 @@ module.exports = class eightball extends command {
                     break;
                 case 4 : answer = "yes definitely.";
                     break;
-                case 5 : answer = "You may rely on it.";
+                case 5 : answer = "you may rely on it.";
                     break;
                 case 6 : answer = "as I see it, yes.";
                     break;
@@ -56,10 +60,14 @@ module.exports = class eightball extends command {
                 case 20 : answer = "very doubtful.";
                     break;
             }
-            message.reply(answer);
+            message.reply(answer + " : '" + question + "'").then(msg => {
+                msg.react('❌');
+            });
         }
         else{
-            message.channel.send('This is not a question');
+            message.channel.send('This is not a question').then(msg => {
+                msg.react('❌');
+            });
         }
     }
 }

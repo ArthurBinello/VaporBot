@@ -10,7 +10,9 @@ module.exports = class stop extends command {
     static action(message){
         let command = message.content.split(' ');
         if(command.length > 1){ //too many arguments
-            message.channel.send('There is too many arguments.');
+            message.channel.send('There is too many arguments.').then(msg => {
+                msg.react('❌');
+            });
         }
         else{
             if(index.channel != null){
