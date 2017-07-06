@@ -5,6 +5,7 @@ const ytpl = require('ytpl');
 const index = require('../index.js');
 
 var lastSong;
+var messageSent;
 
 module.exports = class vapor extends command {
 
@@ -29,12 +30,15 @@ module.exports = class vapor extends command {
                         let streamOptions = { seek: 0, volume: 1 };
                         lastSong = Math.floor(Math.random() * playlist.items.length);
                         let stream = ytdl(playlist.items[lastSong].url_simple);
+                        console.log(playlist.items[lastSong].title);
+                        messageSent.edit('Playing : ' + playlist.items[lastSong].title);
                         let voiceHandler = connection.playStream(stream, streamOptions).on('end', () => {
                             vapor.play(playlist);
                         })
                     })
                     .catch(console.error);
                     message.channel.send('Playing Vaporwave in *' + channel.name + '*...').then(msg => {
+                        messageSent = msg;
                         /*msg.react('⏩');
                         msg.react('🔚');*/
                     });
@@ -58,6 +62,7 @@ module.exports = class vapor extends command {
             lastSong = song;
             let streamOptions = { seek: 0, volume: 1 };
             let stream = ytdl(playlist.items[song].url_simple);
+            messageSent.edit('Playing : ' + playlist.items[lastSong].title);
             let voiceHandler = index.channel.connection.playStream(stream, streamOptions).on('end', () => {
                 vapor.play(playlist);
             });
