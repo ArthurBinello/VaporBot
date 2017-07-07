@@ -60,7 +60,7 @@ module.exports = class eightball extends command {
                 case 20 : answer = "very doubtful.";
                     break;
             }
-            message.reply(answer + " : '" + question + "'").then(msg => {
+            message.channel.send(message.author + " : '*" + question + "*' "  + answer).then(msg => {
                 msg.react('❌');
             });
         }
