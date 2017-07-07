@@ -21,4 +21,11 @@ module.exports = class stop extends command {
             }
         }
     }
+
+    static stop(){
+        if(index.channel != null){
+            index.channel.leave();
+            index.channel = null;
+        }
+    }
 }

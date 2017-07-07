@@ -75,6 +75,10 @@ bot.on('messageReactionAdd', (messageReaction, user) => {
         if(messageReaction.emoji.name == '❌'){
              messageReaction.message.delete();
         }
+        else if(messageReaction.emoji.name == '🔳'){
+            stop.stop();
+            messageReaction.message.delete();
+        }
     }
 });
 

@@ -34,7 +34,9 @@ module.exports = class vapor extends command {
                         let streamOptions = { seek: 0, volume: 1 };
                         lastSong = Math.floor(Math.random() * listPlay.items.length);
                         let stream = ytdl(listPlay.items[lastSong].url_simple, { filter : 'audioonly' });
-                        messageSent.edit('Playing : *' + listPlay.items[lastSong].title + '*');
+                        if(listPlay.items[lastSong].title != null){
+                            messageSent.edit('Playing : *' + listPlay.items[lastSong].title + '*');
+                        }
                         let voiceHandler = connection.playStream(stream, streamOptions).on('end', () => {
                             vapor.play();
                         });
@@ -42,6 +44,7 @@ module.exports = class vapor extends command {
                     .catch(console.error);
                     message.channel.send('Playing Vaporwave in *' + channel.name + '*...').then(msg => {
                         messageSent = msg;
+                        msg.react('🔳');
                     });
                 }
                 else{ //author not in a channel
@@ -63,7 +66,9 @@ module.exports = class vapor extends command {
             lastSong = song;
             let streamOptions = { seek: 0, volume: 1 };
             let stream = ytdl(listPlay.items[song].url_simple, { filter : 'audioonly' });
-            messageSent.edit('Playing : *' + listPlay.items[lastSong].title + '*');
+            if(listPlay.items[lastSong].title != null){
+                messageSent.edit('Playing : *' + listPlay.items[lastSong].title + '*');
+            }
             let voiceHandler = voiceConnection.playStream(stream, streamOptions).on('end', () => {
                 vapor.play();
             });
